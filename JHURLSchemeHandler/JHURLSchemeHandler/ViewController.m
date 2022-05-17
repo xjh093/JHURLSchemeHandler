@@ -35,12 +35,8 @@
 - (WKWebView *)webView{
     if (!_webView) {
         WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
-        if (![WKWebView handlesURLScheme:kCustomScheme]) {
-            NSLog(@"not handle");
-            [config setURLSchemeHandler:[[JHURLSchemeHandler alloc] init] forURLScheme:kCustomScheme];
-        }else{
-            NSLog(@"did handle");
-        }
+        [config setURLSchemeHandler:[[JHURLSchemeHandler alloc] init] forURLScheme:kCustomScheme];
+        [config setURLSchemeHandler:[[JHURLSchemeHandler alloc] init] forURLScheme:kHttps];
         
         _webView = [[WKWebView alloc] initWithFrame:self.view.bounds configuration:config];
     }
