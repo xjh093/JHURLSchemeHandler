@@ -19,6 +19,8 @@
     // haocold://index.css
     // haocold://photo1.png
     // haocold://photo2.png
+    // haocold://photo3.png
+    // https://goobe.io/zh-cn/templates/img/logo-blue-small.png
     
     NSString *fileName = [urlSchemeTask.request.URL.absoluteString lastPathComponent];
     NSString *path = [[NSBundle mainBundle] pathForResource:fileName ofType:nil];
@@ -58,7 +60,7 @@
 /** 停止加载 */
 - (void)webView:(WKWebView *)webView stopURLSchemeTask:(id<WKURLSchemeTask>)urlSchemeTask
 {
-    
+    [urlSchemeTask didFinish];
 }
 
 #pragma mark - private
