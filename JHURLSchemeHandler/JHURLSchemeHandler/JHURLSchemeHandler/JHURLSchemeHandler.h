@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import <WebKit/WebKit.h>
+#import "WKWebView+JHSchemeHandler.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
