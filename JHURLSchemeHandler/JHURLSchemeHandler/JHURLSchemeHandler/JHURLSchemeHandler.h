@@ -11,8 +11,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#define kCustomScheme @"haocold"
-
 @interface JHURLSchemeHandler : NSObject<WKURLSchemeHandler>
 
 @end
