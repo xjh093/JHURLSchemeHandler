@@ -8,6 +8,13 @@
 #import "JHURLSchemeHandler.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 
+#define kLogOpen 1
+#if kLogOpen
+#define Log(...) NSLog(__VA_ARGS__)
+#else
+#define Log(...)
+#endif
+
 @implementation JHURLSchemeHandler
 
 #pragma mark - WKURLSchemeHandler
@@ -15,7 +22,7 @@
 /** 开始加载自定义scheme的资源 */
 - (void)webView:(WKWebView *)webView startURLSchemeTask:(id<WKURLSchemeTask>)urlSchemeTask
 {
-    NSLog(@"%s, URL:%@", __func__, urlSchemeTask.request.URL);
+    Log(@"%s, URL:%@", __func__, urlSchemeTask.request.URL);
     // haocold://index.css
     // haocold://photo1.png
     // haocold://photo2.png
@@ -33,24 +40,20 @@
         [urlSchemeTask didReceiveResponse:response];
         [urlSchemeTask didReceiveData:data];
         [urlSchemeTask didFinish];
-        
     }else{
-        // Load from Net
-        
-        NSLog(@"Load from Net");
-        
-        NSString *url = @"https://avatars.githubusercontent.com/u/7610880";
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
+        // Load from Net        
+        // NSString *url = @"https://avatars.githubusercontent.com/u/7610880";
+
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:urlSchemeTask.request.URL];
         NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
         NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
-
         NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-            [urlSchemeTask didReceiveResponse:response];
-            [urlSchemeTask didReceiveData:data];
+            [self didReceiveResponse:urlSchemeTask response:response];
+            [self didReceiveData:urlSchemeTask data:data];
             if (error) {
-                [urlSchemeTask didFailWithError:error];
+                [self didFailWithError:urlSchemeTask error:error];
             } else {
-                [urlSchemeTask didFinish];
+                [self didFinish:urlSchemeTask];
             }
         }];
         [dataTask resume];
@@ -60,7 +63,7 @@
 /** 停止加载 */
 - (void)webView:(WKWebView *)webView stopURLSchemeTask:(id<WKURLSchemeTask>)urlSchemeTask
 {
-
+    [self didFinish:urlSchemeTask];
 }
 
 #pragma mark - private
@@ -77,6 +80,46 @@
         CFRelease(type);
     }
     return mimeType;
+}
+
+- (void)didReceiveResponse:(id<WKURLSchemeTask>)urlSchemeTask response:(NSURLResponse *)response
+{
+    @try {
+        [urlSchemeTask didReceiveResponse:response];
+        Log(@"didReceiveResponse exception: null");
+    } @catch (NSException *exception) {
+        Log(@"didReceiveResponse exception: %@", exception);
+    }
+}
+
+- (void)didReceiveData:(id<WKURLSchemeTask>)urlSchemeTask data:(NSData *)data
+{
+    @try {
+        [urlSchemeTask didReceiveData:data];
+        Log(@"didReceiveData exception: null");
+    } @catch (NSException *exception) {
+        Log(@"didReceiveData exception: %@", exception);
+    }
+}
+
+- (void)didFinish:(id<WKURLSchemeTask>)urlSchemeTask
+{
+    @try {
+        [urlSchemeTask didFinish];
+        Log(@"didFinish exception: null");
+    } @catch (NSException *exception) {
+        Log(@"didFinish exception: %@", exception);
+    }
+}
+
+- (void)didFailWithError:(id<WKURLSchemeTask>)urlSchemeTask error:(NSError *)error
+{
+    @try {
+        [urlSchemeTask didFailWithError:error];
+        Log(@"didFailWithError exception: null");
+    } @catch (NSException *exception) {
+        Log(@"didFailWithError exception: %@", exception);
+    }
 }
 
 @end
