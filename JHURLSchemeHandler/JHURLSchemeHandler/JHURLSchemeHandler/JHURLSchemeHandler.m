@@ -60,7 +60,7 @@
 /** 停止加载 */
 - (void)webView:(WKWebView *)webView stopURLSchemeTask:(id<WKURLSchemeTask>)urlSchemeTask
 {
-    [urlSchemeTask didFinish];
+
 }
 
 #pragma mark - private
