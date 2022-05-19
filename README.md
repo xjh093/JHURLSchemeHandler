@@ -11,6 +11,9 @@ Use `WKURLSchemeHandler` to load local source: `image`, `css`, `js` In `WKWebVie
 
 # Logs
 
+3.fix crash for "This task has already been stopped" when hook 'http'.
+- 2022-5-19
+
 2.support 'http', 'https' hook.
 - 2022-5-17
 
